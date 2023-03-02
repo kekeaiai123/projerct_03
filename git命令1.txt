@@ -1,0 +1,57 @@
+查看所有的全局变量：git config --list --global 
+查看指定的全局配置项：git config user.name
+git config user.email
+打开命令帮助手册：git help config
+查看文件处于什么状态：git status
+以精简的方式显示文件状态：git status -s
+git status --short
+跟踪一个文件:git add index.html //跟踪之前先clear 下清空终端的缓存
+跟踪之后再查看状态会发现 index.html已被放置暂存区（暂存的是绿色的A，未跟踪的是？？）
+
+提交更新：git commit     
+git commit -m "新建了index.html文件"  //-m 后面表示对提交内容的描述
+（文件则被放到git仓库）
+
+修改已提交的文件：当我们敲完代码保存文件再看 git status
+文件状态时，（出现红色字   modified:index.html）
+git status -s   出现（红色M） （已修改状态）
+如果要把它放到暂存区：git add  (红色变绿色)
+
+撤销对文件的修改：对工作中的对应文件的修改，还原成git仓库中所保存的版本。操作结果：所有的修改会丢失，且无法恢复，危险性比较高，请慎重操作
+：git checkout -- index.html 
+（建议别使用）
+一次性向暂存区一次性添加多个文件(已修改的或者新增跟踪的)
+git add .
+
+从暂存区移除对应的文件：git reset HEAD index.html（出现白色的字，这些文件说明未被跟踪或者已修改状态）
+
+跳过使用暂存区，直接工作区->git仓库，提交的时候：git commit -a -m"描述信息" （所有文件一起被提交）
+
+移除文件：1、从git仓库和工作区同时移除对应的文件：git rm -f index.html
+2、只从git 仓库中移除，但保留工作区的index.css文件
+git rm --cached index.css
+
+查看提交历史：git log:最近的在最上面
+只展示最新的两条提交历史：git log -2
+在一行上展示最近两条提交历史的信息：git log -2 --pretty=oneline
+在一行上展示最近提交提交的两条历史信息，并自定义输出格式，
+git log -2 --pretty=format:"%h | %an |%ar | %s"(简写哈希值 、作者名字、作者修订日期，按多久以前的方式显示、提交说明)
+
+回退到指定版本：git log --pretty=oneline //展示所有提交信息
+回退指定版本：git reset --hard <CommitID> 
+在旧版本查看所有版本：git reflog --pretty=oneline
+再根据最新的提交ID，跳转到指定的版本
+
+
+有些文件无需纳入git仓库的管理，但不希望这些文件总出现在未跟踪的文件里，所以要创建一个名为.gitignore的配置文件。
+.gitignore文件的格式规范：1、以 #开头的注释
+2、以 /结尾的目录
+3、以 /开头防止递归
+4、以 ！开头表示取反
+5、可以使用glob模式进行文件和文件夹的匹配（glob指简化了的正则表达式）
+glob模式：
+1、星号*匹配0个或者多个任意字符
+2、[abc]匹配在一个列在方括号里的字符（这里指匹配一个a或者一个b或者一个c）
+3、问好？只匹配一个任意字符
+4、用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如[0-9]表示匹配所有0到9的数字）
+5、两个星号**表示匹配任意中间目录（比如a/**/z可以匹配a/z、a/b/z或a/b/c/z等）
